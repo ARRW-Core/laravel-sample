@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\PostsController;
 use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Support\Facades\Route;
 
@@ -15,7 +16,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+//Route::get('/', function () {
+//    Debugbar::info('Hello from a route');
+//    return view('welcome');
+//});
+//Route::get('/blog', [PostsController::class, 'index']);
 
-    return view('welcome');
-});
+Route::resource('blog', PostsController::class);
