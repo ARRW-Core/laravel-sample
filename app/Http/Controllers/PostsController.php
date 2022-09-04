@@ -46,7 +46,8 @@ class PostsController extends Controller
      */
     public function show($id)
     {
-        //
+        //returns id without view
+        return $id;
     }
 
     /**
