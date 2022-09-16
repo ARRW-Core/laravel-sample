@@ -47,9 +47,9 @@ Options - Asks the server which verbs are supported
 
 //Route prefix and group for /blog
 Route::prefix('blog')->group(function () {
+    Route::get('/create', [PostsController::class, 'create'])->name('blog.create');
     Route::get('/', [PostsController::class, 'index'])->name('blog.index');
     Route::get('/{id}', [PostsController::class, 'show'])->name('blog.show');
-    Route::get('/create', [PostsController::class, 'create'])->name('blog.create');
     Route::post('/', [PostsController::class, 'store'])->name('blog.store');
     Route::get('/{id}/edit', [PostsController::class, 'edit'])->name('blog.edit');
     Route::patch('/{id}', [PostsController::class, 'update'])->name('blog.update');
