@@ -18,13 +18,27 @@
         <hr class="border border-1 border-gray-300 mt-10">
     </div>
 
-    <div class="py-10 sm:py-20">
-        <a class="primary-btn inline text-base sm:text-xl bg-green-500 py-4 px-4 shadow-xl rounded-full transition-all hover:bg-green-400"
-           href="{{ route('blog.create') }}">
-            New Article
-        </a>
-    </div>
+    @if (Auth::user())
+        <div class="py-10 sm:py-20">
+            <a class="primary-btn inline text-base sm:text-xl bg-green-500 py-4 px-4 shadow-xl rounded-full transition-all hover:bg-green-400"
+               href="{{ route('blog.create') }}">
+                New Article
+            </a>
+        </div>
+    @endif
 </div>
+{{--if session exists and has message--}}
+{{--make a div with a warning and the message--}}
+{{--use blade syntax for the if statement--}}
+{{--use tailwind classes for styling--}}
+{{--use blade syntax for the message--}}
+@if (session()->has('message'))
+    <div class="w-4/5 mx-auto mt-5">
+        <p class="w-2/6 mb-4 text-gray-50 bg-green-500 rounded-2xl py-4">
+            {{ session()->get('message') }}
+        </p>
+    </div>
+@endif
 
 @foreach($posts as $post)
     <div class="w-4/5 mx-auto pb-10">
@@ -44,14 +58,35 @@
                     Made by:
                         <a href=""
                            class="text-green-500 italic hover:text-green-400 hover:border-b-2 border-green-400 pb-3 transition-all">
-                            RAIG
+                            {{ $post->user->name }}
                         </a>
-                    op 13-07-2022
+                    on {{ date('jS M Y', strtotime($post->updated_at)) }}
                 </span>
+{{--                create an href that would route to blog.edit--}}
+                @if (isset(Auth::user()->id) && Auth::user()->id == $post->user_id)
+                    <a href="{{ route('blog.edit', $post->id) }}"
+                       class="text-green-500 italic hover:text-green-400 hover:border-b-2 border-green-400 pb-3 transition-all py-20">
+                        Edit
+                    </a>
+                    {{--                create an href that would route to blog.destroy--}}
+                    <form action="{{ route('blog.destroy', $post->id) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="text-red-500 italic hover:text-red-400 hover:border-b-2 border-red-400 pb-3 transition-all py-20">
+                            Delete
+                        </button>
+                    </form>
+                @endif
+
             </div>
         </div>
     </div>
 @endforeach
+
+{{--paginate--}}
+<div class="w-4/5 mx-auto">
+    {{ $posts->links() }}
+</div>
 
 
 {{--while posts variable is not empty, make a table of posts with database variables in blade format
